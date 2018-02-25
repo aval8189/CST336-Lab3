@@ -7,6 +7,7 @@ $myDeck = [];
 for ($i = 0; $i < 52; $i++) {
 	$myDeck[] = $i;
 }
+
 #Using the array function to shuffle the deck that we will be using.
 shuffle($deck);
 
