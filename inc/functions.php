@@ -1,3 +1,4 @@
+
 <?php
 
 #Creating an array for my deck and a loop that goes 
@@ -28,13 +29,13 @@ $myWinner = array("", "", "", "");
 function startGame() {
 	#Running a loop that generates 
 	for ($i = 0; $i < 4; $i++){
-		#Function that creates 4 players.
+		#Function that creates 4 players with images and names.
 		createPlayer($i);
 		#Function that generates cards & returns an array of cards per player.
 		getHand($i);
 	}
 	
-	#Displays the array of cards per player along with the sum of points
+	#Displays the array of cards per player along with the sum of points.
 	displayHand();
 	
 	#Display a winner based on the hands for each player.
@@ -47,7 +48,7 @@ function startGame() {
 
 #-----------------------GENERATING A HAND--------------------------------
 #Function to generate a random hand for each player. 
-#(* Passing array $myPlayers as an argument)
+# Passing array $myPlayers as an argument.
 function getHand($myPlayers) {
 	
 	#Creating global variables, so they can be used in this function.
