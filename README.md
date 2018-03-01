@@ -2,29 +2,23 @@
  
  Group 10 :  Juan A, Danial, Sergio, Roberto
  
- 
  *IMPORTANT!
 
 You can clone this commit and begin from here.
 
-HTML basic done, PHP getHand() & startGame() DONE 
+WHAT WE ARE MISSING:
 
-We are missing :                     
+1) SESSIONS: 
+	- We need to insert sessions for the elapsed time feature AND
+	  to count the number of times a player has won.
 
-1) displayHand() -   
+2) CSS & HTML:
+	- We need to insert a nice layout and a button to refresh everytime!
 
-	a) Displays the array of cards per player along with the sum of points.
-				    
-2) displayWinners() - 
-	
-	a) Display a winner based on the hands for each player.            
-	b) Display winner(s) (could be more than 1 TIE) along with 
-	   points obtained.        
-	   
-3) createPlayer() - 
-	
-    a) Function that creates 4 players with images and names respectively.   
+3) PHP:
+	- We need to add the displayWinner() see functions.php file for details.
+	- Also randomizePlayers() see functions.php file for details.
+	- Maybe we should also adjust the range so it's much closer to 42 than it is right now,
+	  since I have seen that the points will go to 50,48..
 
-4) CSS file -
-	a) Make it look pretty!                           
-
+If you have any questions about my part, let me know, I'll be more than happy to help!
