@@ -110,8 +110,14 @@ function getHand($playerNumber) {
 		#Selecting what number the card will be (% 13).
 		$cardNumber = $lastCard % 13;
 		#myPoints array[index of the Player (total of 4 players] adding the points everytime.
+		if($cardNumber == 0)
+		{
+			$totalPoints +=13;
+		}
+		else
+		{
 		$totalPoints += $cardNumber;
-		
+		}
 		#When cardNumber is 0 that means that is the King or 13.
 		if($cardNumber == 0)
 		{
