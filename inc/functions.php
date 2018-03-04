@@ -171,10 +171,8 @@ function displayElapsedTime(){
 	global $averagetime;
 	global $sessions;
 	$endtime = microtime() - $starttime;
-	//array_push(	$averagetime, $endtime);
-	//array_push( $_SESSION['averagetime'], $endtime);
+	
 	$_SESSION['averagetime'] = $_SESSION['averagetime']+$endtime;
-	//$_SESSION['averagetime'] = $averagetime;
 	$avg = 0;
 	if($_SESSION['sessions'] == 0)
 	{
@@ -185,21 +183,21 @@ function displayElapsedTime(){
 		$avgtime = $_SESSION['averagetime']/($_SESSION['sessions']+1);
 	}
 
-	print_r($averagetime);
-	echo "</br>";
-	print_r($_SESSION['averagetime']);
+	//print_r($averagetime);
+	//echo "</br>";
+	//print_r($_SESSION['averagetime']);
 	echo "</br>";
 	echo "Current session time: " . number_format($endtime, 5) . " seconds </br>" ;
 	echo "Average time elapsed: " . number_format($avgtime, 5) . " seconds";
 	echo "<h3> Number of Times Played: ".number_format($_SESSION['sessions']) ."</h3>"; 
-	if($_SESSION['sessions'] >= 3)
+	/*if($_SESSION['sessions'] >= 3)
 	{
 		session_destroy();
 	}
 	else
-	{
+	{*/
 	$_SESSION['sessions'] +=1;
-	}
+	//}
 }
 
 
