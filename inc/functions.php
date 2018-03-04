@@ -1,5 +1,13 @@
 <?php
 
+$_SESSION['sessions'] = 0;
+$averagetime = array();
+$_SESSION['averagetime'] = $averagetime;
+//array_push($averagetime, $_SESSION['averagetime']);
+session_start();
+
+
+
 #--------------------------CREATING DECK---------------------------------
 #Creating an array for my deck and a loop that goes 
 #through all the possible cards in the deck (52 possibilities).
@@ -10,6 +18,7 @@ for ($i = 1; $i < 53; $i++) {
 #------------------------------------------------------------------------
 
 #---------------------INITIALIZING ARRAYS--------------------------------
+#Creating array to store session time
 
 #Creating array to store Points.
 $myPoints = array();
@@ -24,6 +33,7 @@ $myWinner = array("", "", "", "");
 #---------------------STARTING THE GAME ---------------------------------
 #Function that calls for starting the game. 
 function startGame() {
+	$starttime = microtime(true);
 	
 	global $myPlayers;
 	#Running a loop that generates 
@@ -154,5 +164,43 @@ function getHand($playerNumber) {
 
 }
 #------------------------------------------------------------------------
+
+function displayElapsedTime(){
+	global $starttime;
+	global $averagetime;
+	global $sessions;
+	$endtime = microtime() - $starttime;
+	array_push(	$averagetime, $endtime);
+	//$_SESSION['averagetime'] = $averagetime;
+	$avg = 0;
+	if($_SESSION['sessions'] == 0)
+	{
+		$avgtime = $endtime;
+	}
+	else
+	{
+		$avgtime = array_sum($averagetime)/($_SESSION['sessions']+1);
+	}
+
+	print_r($averagetime);
+	echo "</br>";
+	print_r($_SESSION['averagetime']);
+	echo "</br>";
+	echo "Current session time: " . number_format($endtime, 5) . " seconds </br>" ;
+	echo "Average time elapsed: " . number_format($avgtime, 5) . " seconds";
+	echo "<h3> Number of Times Played: ".number_format($_SESSION['sessions']) ."</h3>"; 
+	if($_SESSION['sessions'] >= 3)
+	{
+		session_destroy();
+	}
+	else
+	{
+	$_SESSION['sessions'] +=1;
+	}
+}
+
+
+
+
 
 ?>

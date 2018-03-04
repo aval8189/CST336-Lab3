@@ -14,6 +14,7 @@
 			<?php 
 				include 'inc/functions.php';
 				startGame();
+				displayElapsedtime();
  			?>
 		</div>
 		
