@@ -7,7 +7,6 @@ $_SESSION['averagetime'];//= $averagetime;
 session_start();
 
 
-
 #--------------------------CREATING DECK---------------------------------
 #Creating an array for my deck and a loop that goes 
 #through all the possible cards in the deck (52 possibilities).
@@ -47,52 +46,44 @@ function startGame()
 	global $myPlayers;
 	#Running a loop that generates 
 	for ($i = 0; $i < 4; $i++){
-		#Function that creates 4 players with images and names and displays it.
-		createPlayer($i);
-		#Function that generates cards & returns an array of cards per player.
 		getHand($i);
 	}
 	
-	//WHAT WE ARE MISSING: 
 	
-	//randomizePlayers();
-	
-	//displayWinner();
 	
 }
 #------------------------------------------------------------------------
 
-
-#-------------------------CREATING PLAYER--------------------------------
-#Function that creates 4 players based on the loop from startGame.
-#Image number should go from 0 to 3 followed by .jpg
-function createPlayer($imageNumber) {
-	#Creating globlal variables so they can use it in myPlayers.
-	global $myPlayers;
-	#Temporal value that holds the IMAGE path to be displayed later on.
-	$temp = "<img id='player'".$imageNumber."style='width:100px; margin:0 auto' src='img/players/" . $imageNumber . ".jpg'/>";
-	#Pushing and storing image into myPlayers array to user later.
-	array_push($myPlayers, $temp);
-}
-#------------------------------------------------------------------------
-
-#-----------------------DISPLAYING PLAYERS-------------------------------
-#Function that displays 4 players in different position each time.
-function randomizePlayers(){
-
-	#We should figure out how to display players in a random way everytime
-	#we refresh the page.
-
-}
-#------------------------------------------------------------------------
 
 #-----------------------DISPLAYING WINNER--------------------------------
 #Function that displays winner o winner(s) by adding up the totalPoints from each player.
 function displayWinner(){
-
+	
+	global $ron_total;
+	global $malfoy_total;
+	global $hermione_total;
+	global $harry_total;
+	
+	
 	global $myPoints;
-	global $myPlayers;
-	global $myHands;
+	global $allHands;
+	
+	$totalSum = array_sum($myPoints);
+	 
+	if($ron_total >= $malfoy_total && $ron_total >= $hermione_total && $ron_total >= $harry_total && $ron_total >= 42){
+		echo "<h2> [Ron wins] </h2>";
+	}
+	else if ($malfoy_total >= $ron_total && $malfoy_total >= $hermione_total && $malfoy_total >= $harry_total && $malfoy_total >= 42){
+		echo "<h2> [Malfoy wins] </h2>";
+	}
+	else if ($hermione_total >= $ron_total && $hermione_total >= $malfoy_total && $hermione_total >= $harry_total && $hermione_total >= 42){
+		echo "<h2> [Hermione wins] </h2>";
+	}
+	else{
+		echo "<h2> [Harry wins] </h2>";
+	}
+
+	echo "<h1> Total SUM: " . "$totalSum</h1>";
 	
 	#We should calculate the points from each row and display who is the winner.
 
@@ -104,6 +95,13 @@ function displayWinner(){
 #-----------------------GENERATING A HAND--------------------------------
 #Function to generate a random hand for each player. 
 # Passing array $myPlayers as an argument.
+
+$total1 = 0;
+$total2 = 0;
+$total3 = 0;
+$total4 = 0;
+
+
 function getHand($playerNumber) {
 	
 	#Creating global variables, so they can be used in this function.
@@ -118,6 +116,12 @@ function getHand($playerNumber) {
 	global $player3;
 	global $player4;
 	
+	#to store all values
+	global $ron_total;
+	global $malfoy_total;
+	global $hermione_total;
+	global $harry_total;
+	
 	#Creating an array to store the 4 suits of the deck for the PATHWAY.
 	$mySuits = array("clubs", "diamonds", "hearts", "spades");
 	
@@ -130,7 +134,7 @@ function getHand($playerNumber) {
 	#While each player's hand doesn't go over 42.
 	while($flag) {
 		
-		$pictemp = "<img id='player'".$playerNumber."style='width:100px; margin:0 auto' src='img/players/" . $playerNumber . ".jpg'/>";
+		$pictemp = "<img id='player'".$playerNumber. " styl' src='img/players/" . $playerNumber . ".jpg'/>";
 		#Popping the last card from the Deck which will be the chosen one.
 		$lastCard = array_pop($myDeck);
 		#Selecting what number the card will be (% 13).
@@ -151,8 +155,14 @@ function getHand($playerNumber) {
 			$cardNumber = 13;
 		}
 		
+		#temp variables for player names
+		$name1 = "<h3> Ron </h3>";
+		$name2 = "<h3> Malfoy </h3>";
+		$name3 = "<h3> Hermione </h3>";
+		$name4 = "<h3> Harry </h3>";
+		
 		#Storing the picture into tempHand variable.
-		$tempHand = "<img class='cards' style='width:100px;' src='img/". $mySuits[ceil($lastCard / 13) - 1]."/" . $cardNumber . ".png'/>";
+		$tempHand = "<img class='cards' src='img/". $mySuits[ceil($lastCard / 13) - 1]."/" . $cardNumber . ".png'/>";
 		
 		#Creating eachHand array to store each Hand for each player. Meaning 4 hands for 4 players.
 		#Pushing the temporal hand Image (could be 4,5,6,7,8,9 in a hand) times 4 rows for 4 players into eachHand array.
@@ -183,30 +193,46 @@ function getHand($playerNumber) {
 		{
 			if($playerNumber == 0)
 			{
+				$ron_total = $totalPoints;
+				array_push($myPoints,$totalPoints);
+				
 				array_unshift($player1,$pictemp);
 				
 				array_push($player1,$totalPoints);
+				array_push($player1, $name1);
 				array_push($allHands,$player1);
 			}
 			
 			if($playerNumber == 1)
 			{
+				$malfoy_total = $totalPoints;
+				array_push($myPoints,$totalPoints);
+				
 				array_unshift($player2,$pictemp);
 				array_push($player2,$totalPoints);
+				array_push($player2, $name2);
 				array_push($allHands,$player2);
 			}
 			
 			if($playerNumber == 2)
 			{
+				$hermione_total = $totalPoints;
+				array_push($myPoints,$totalPoints);
+				
 				array_unshift($player3,$pictemp);
 				array_push($player3,$totalPoints);
+				array_push($player3, $name3);
 				array_push($allHands,$player3);
 			}
 			
 			if($playerNumber == 3)
 			{
+				$harry_total = $totalPoints;
+				array_push($myPoints,$totalPoints);
+				
 				array_unshift($player4,$pictemp);
 				array_push($player4,$totalPoints);
+				array_push($player4, $name4);
 				array_push($allHands,$player4);
 				
 				shuffle($allHands);
@@ -217,7 +243,6 @@ function getHand($playerNumber) {
 					{
 						echo $card;
 					}
-					echo "</br></br>";
 				}
 			}
 			
@@ -233,7 +258,7 @@ function getHand($playerNumber) {
 	#myPoints array now holds all the values for each player.
 	#so myPlayers[0] will correspond to myPoints[0], same for [1],[2],[3].
 	#so we can store all the points here from each player for later using the sessions.
-	$myPoints[$playerNumber] = $totalPoints;
+	//$myPoints[$playerNumber] = $totalPoints;
 	
 }
 #------------------------------------------------------------------------
@@ -272,7 +297,6 @@ function displayElapsedTime(){
 	$_SESSION['sessions'] +=1;
 	//}
 }
-
 
 
 
