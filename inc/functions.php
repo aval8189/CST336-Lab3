@@ -18,7 +18,6 @@ for ($i = 1; $i < 53; $i++) {
 #------------------------------------------------------------------------
 
 #---------------------INITIALIZING ARRAYS--------------------------------
-#Creating array to store session time
 
 #Creating array to store Points.
 $myPoints = array();
@@ -26,14 +25,24 @@ $myPoints = array();
 $myPlayers = array();
 #Creating array to store Hands.
 $myHands = array();
+
+#creating a few arrays to house all cards.
+$allHands = array(); 
+$player1 = array();
+$player2 = array();
+$player3 = array();
+$player4 = array();
+
 #Creating empty array to store Winner.
 $myWinner = array("", "", "", "");
 #------------------------------------------------------------------------
 
 #---------------------STARTING THE GAME ---------------------------------
 #Function that calls for starting the game. 
-function startGame() {
-	$starttime = microtime(true);
+function startGame() 
+{
+	//starting the micro time counter
+	$start = microtime(true);
 	
 	global $myPlayers;
 	#Running a loop that generates 
@@ -49,6 +58,7 @@ function startGame() {
 	//randomizePlayers();
 	
 	//displayWinner();
+	
 }
 #------------------------------------------------------------------------
 
@@ -60,11 +70,9 @@ function createPlayer($imageNumber) {
 	#Creating globlal variables so they can use it in myPlayers.
 	global $myPlayers;
 	#Temporal value that holds the IMAGE path to be displayed later on.
-	$temp = "<img id='player'".$i."style='width:100px; margin:0 auto' src='img/players/" . $imageNumber . ".jpg'/>";
+	$temp = "<img id='player'".$imageNumber."style='width:100px; margin:0 auto' src='img/players/" . $imageNumber . ".jpg'/>";
 	#Pushing and storing image into myPlayers array to user later.
 	array_push($myPlayers, $temp);
-	#Shuffling myPlayers array.
-	echo $myPlayers[$imageNumber];
 }
 #------------------------------------------------------------------------
 
@@ -103,6 +111,13 @@ function getHand($playerNumber) {
 	global $myPoints;
 	global $myHands;
 	
+	#allowing the arrays for players to be used
+	global $allHands;
+	global $player1;
+	global $player2;
+	global $player3;
+	global $player4;
+	
 	#Creating an array to store the 4 suits of the deck for the PATHWAY.
 	$mySuits = array("clubs", "diamonds", "hearts", "spades");
 	
@@ -115,6 +130,7 @@ function getHand($playerNumber) {
 	#While each player's hand doesn't go over 42.
 	while($flag) {
 		
+		$pictemp = "<img id='player'".$playerNumber."style='width:100px; margin:0 auto' src='img/players/" . $playerNumber . ".jpg'/>";
 		#Popping the last card from the Deck which will be the chosen one.
 		$lastCard = array_pop($myDeck);
 		#Selecting what number the card will be (% 13).
@@ -126,7 +142,7 @@ function getHand($playerNumber) {
 		}
 		else
 		{
-		$totalPoints += $cardNumber;
+			$totalPoints += $cardNumber;
 		}
 		#When cardNumber is 0 that means that is the King or 13.
 		if($cardNumber == 0)
@@ -136,32 +152,89 @@ function getHand($playerNumber) {
 		}
 		
 		#Storing the picture into tempHand variable.
-		$tempHand = "<img id='cards' style='width:100px;' src='img/". $mySuits[ceil($lastCard / 13) - 1]."/" . $cardNumber . ".png'/>";
+		$tempHand = "<img class='cards' style='width:100px;' src='img/". $mySuits[ceil($lastCard / 13) - 1]."/" . $cardNumber . ".png'/>";
 		
 		#Creating eachHand array to store each Hand for each player. Meaning 4 hands for 4 players.
-		$eachHand = array();
 		#Pushing the temporal hand Image (could be 4,5,6,7,8,9 in a hand) times 4 rows for 4 players into eachHand array.
-		array_push($eachHand, $tempHand);
+		
+		if($playerNumber == 0)
+		{
+			array_push($player1,$tempHand);
+		}
+		if($playerNumber == 1)
+		{
+			array_push($player2, $tempHand);
+		}
+		if($playerNumber == 2)
+		{
+			array_push($player3, $tempHand);
+		}
+		if($playerNumber == 3)
+		{
+			array_push($player4, $tempHand);
+		}
 		
 		#Displaying the cards.
-		echo $tempHand;
+		
+		//echo $tempHand;
 		
 		#If the totalPoints counted are 42 or greater than 42, then jump out of the while loop.
-		if($totalPoints >= 42)
+		if($totalPoints == 36 || $totalPoints >= 42)
 		{
+			if($playerNumber == 0)
+			{
+				array_unshift($player1,$pictemp);
+				
+				array_push($player1,$totalPoints);
+				array_push($allHands,$player1);
+			}
+			
+			if($playerNumber == 1)
+			{
+				array_unshift($player2,$pictemp);
+				array_push($player2,$totalPoints);
+				array_push($allHands,$player2);
+			}
+			
+			if($playerNumber == 2)
+			{
+				array_unshift($player3,$pictemp);
+				array_push($player3,$totalPoints);
+				array_push($allHands,$player3);
+			}
+			
+			if($playerNumber == 3)
+			{
+				array_unshift($player4,$pictemp);
+				array_push($player4,$totalPoints);
+				array_push($allHands,$player4);
+				
+				shuffle($allHands);
+				
+				foreach($allHands as $element => $inner_array)
+				{
+					foreach($inner_array as $card)
+					{
+						echo $card;
+					}
+					echo "</br></br>";
+				}
+			}
+			
 			#Jumping out of the while loop.
 			$flag = false;
 		}
+		
 	}
 	
 	#Displaying the total Points.
-	echo "Total Points: " . $totalPoints; echo "<br>";
+	//echo "Total Points: " . $totalPoints; echo "<br>";
 	
 	#myPoints array now holds all the values for each player.
 	#so myPlayers[0] will correspond to myPoints[0], same for [1],[2],[3].
 	#so we can store all the points here from each player for later using the sessions.
 	$myPoints[$playerNumber] = $totalPoints;
-
+	
 }
 #------------------------------------------------------------------------
 
