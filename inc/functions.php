@@ -1,8 +1,8 @@
 <?php
 
-$_SESSION['sessions'] = 0;
+$_SESSION['sessions'];
 $averagetime = array();
-$_SESSION['averagetime'] = $averagetime;
+$_SESSION['averagetime'];//= $averagetime;
 //array_push($averagetime, $_SESSION['averagetime']);
 session_start();
 
@@ -166,11 +166,14 @@ function getHand($playerNumber) {
 #------------------------------------------------------------------------
 
 function displayElapsedTime(){
+	session_start();
 	global $starttime;
 	global $averagetime;
 	global $sessions;
 	$endtime = microtime() - $starttime;
-	array_push(	$averagetime, $endtime);
+	//array_push(	$averagetime, $endtime);
+	//array_push( $_SESSION['averagetime'], $endtime);
+	$_SESSION['averagetime'] = $_SESSION['averagetime']+$endtime;
 	//$_SESSION['averagetime'] = $averagetime;
 	$avg = 0;
 	if($_SESSION['sessions'] == 0)
@@ -179,7 +182,7 @@ function displayElapsedTime(){
 	}
 	else
 	{
-		$avgtime = array_sum($averagetime)/($_SESSION['sessions']+1);
+		$avgtime = $_SESSION['averagetime']/($_SESSION['sessions']+1);
 	}
 
 	print_r($averagetime);
